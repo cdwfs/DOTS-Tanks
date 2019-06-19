@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DOTS-Main.unity
     guid: c60365b2a973e01408fca2fabea84078
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 21c0acad34a2f0845bee25538b9b4e2c,
+      type: 2}
