@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/DOTSScripts/Input/TanksControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/DOTS-Scripts/TanksControls.inputactions'
 
 using System;
 using System.Collections;
