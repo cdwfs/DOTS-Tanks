@@ -1,5 +1,6 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
+using Unity.Transforms;
 
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public class GameManagerSystem : ComponentSystem
@@ -64,6 +65,18 @@ public class GameManagerSystem : ComponentSystem
             var gameProgress = GetSingleton<GameProgress>();
             gameProgress.CurrentRound = 1;
             SetSingleton(gameProgress);
+
+            CreateTanks();
         }
+    }
+
+    void CreateTanks()
+    {
+        // TODO - this archetype should b coming from a prefab
+        EntityArchetype tankArchetype = World.EntityManager.CreateArchetype(typeof(TankPlayer), typeof(Translation), typeof(Rotation));
+        
+        Entity player1Entity = EntityManager.CreateEntity(tankArchetype);
+        EntityManager.SetComponentData(player1Entity, new TankPlayer { Score = });
+
     }
 }

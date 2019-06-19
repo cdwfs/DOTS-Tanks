@@ -62,17 +62,6 @@ public class TanksControls : IInputActionCollection
                     ""processors"": """",
                     ""interactions"": """",
                     ""bindings"": []
-                },
-                {
-                    ""name"": ""New action"",
-                    ""id"": ""832a92cc-2c34-48be-bf7b-b5489c75d456"",
-                    ""expectedControlLayout"": """",
-                    ""continuous"": false,
-                    ""passThrough"": false,
-                    ""initialStateCheck"": false,
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""bindings"": []
                 }
             ],
             ""bindings"": [
@@ -219,66 +208,6 @@ public class TanksControls : IInputActionCollection
                     ""isComposite"": false,
                     ""isPartOfComposite"": false,
                     ""modifiers"": """"
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0932d347-d484-4418-9638-7af80a80cdbf"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7383c368-f3f9-4092-8e41-11e697469cd9"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""5feb1ed1-a787-4983-8faa-99d0c848274e"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false,
-                    ""modifiers"": """"
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""bd7bad18-6500-4691-9c86-6c6c4c9982c8"",
-                    ""path"": ""<Keyboard>/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""4822c7f0-f864-46a2-a5a1-47ef7b0fa59a"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true,
-                    ""modifiers"": """"
                 }
             ]
         }
@@ -291,7 +220,6 @@ public class TanksControls : IInputActionCollection
         m_InGame_Player2Move = m_InGame.GetAction("Player2Move");
         m_InGame_Player1Shoot = m_InGame.GetAction("Player1Shoot");
         m_InGame_Player2Shoot = m_InGame.GetAction("Player2Shoot");
-        m_InGame_Newaction = m_InGame.GetAction("New action");
     }
 
     ~TanksControls()
@@ -348,7 +276,6 @@ public class TanksControls : IInputActionCollection
     private InputAction m_InGame_Player2Move;
     private InputAction m_InGame_Player1Shoot;
     private InputAction m_InGame_Player2Shoot;
-    private InputAction m_InGame_Newaction;
     public struct InGameActions
     {
         private TanksControls m_Wrapper;
@@ -357,7 +284,6 @@ public class TanksControls : IInputActionCollection
         public InputAction @Player2Move { get { return m_Wrapper.m_InGame_Player2Move; } }
         public InputAction @Player1Shoot { get { return m_Wrapper.m_InGame_Player1Shoot; } }
         public InputAction @Player2Shoot { get { return m_Wrapper.m_InGame_Player2Shoot; } }
-        public InputAction @Newaction { get { return m_Wrapper.m_InGame_Newaction; } }
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -380,9 +306,6 @@ public class TanksControls : IInputActionCollection
                 Player2Shoot.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnPlayer2Shoot;
                 Player2Shoot.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnPlayer2Shoot;
                 Player2Shoot.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnPlayer2Shoot;
-                Newaction.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnNewaction;
-                Newaction.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnNewaction;
-                Newaction.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnNewaction;
             }
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -399,9 +322,6 @@ public class TanksControls : IInputActionCollection
                 Player2Shoot.started += instance.OnPlayer2Shoot;
                 Player2Shoot.performed += instance.OnPlayer2Shoot;
                 Player2Shoot.canceled += instance.OnPlayer2Shoot;
-                Newaction.started += instance.OnNewaction;
-                Newaction.performed += instance.OnNewaction;
-                Newaction.canceled += instance.OnNewaction;
             }
         }
     }
@@ -418,6 +338,5 @@ public class TanksControls : IInputActionCollection
         void OnPlayer2Move(InputAction.CallbackContext context);
         void OnPlayer1Shoot(InputAction.CallbackContext context);
         void OnPlayer2Shoot(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
     }
 }

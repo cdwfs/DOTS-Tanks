@@ -48,17 +48,6 @@
                     "processors": "",
                     "interactions": "",
                     "bindings": []
-                },
-                {
-                    "name": "New action",
-                    "id": "832a92cc-2c34-48be-bf7b-b5489c75d456",
-                    "expectedControlLayout": "",
-                    "continuous": false,
-                    "passThrough": false,
-                    "initialStateCheck": false,
-                    "processors": "",
-                    "interactions": "",
-                    "bindings": []
                 }
             ],
             "bindings": [
@@ -204,66 +193,6 @@
                     "action": "Player2Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false,
-                    "modifiers": ""
-                },
-                {
-                    "name": "",
-                    "id": "0932d347-d484-4418-9638-7af80a80cdbf",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
-                },
-                {
-                    "name": "",
-                    "id": "7383c368-f3f9-4092-8e41-11e697469cd9",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "5feb1ed1-a787-4983-8faa-99d0c848274e",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": true,
-                    "isPartOfComposite": false,
-                    "modifiers": ""
-                },
-                {
-                    "name": "negative",
-                    "id": "bd7bad18-6500-4691-9c86-6c6c4c9982c8",
-                    "path": "<Keyboard>/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": true,
-                    "modifiers": ""
-                },
-                {
-                    "name": "positive",
-                    "id": "4822c7f0-f864-46a2-a5a1-47ef7b0fa59a",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": true,
                     "modifiers": ""
                 }
             ]
