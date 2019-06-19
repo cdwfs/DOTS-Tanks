@@ -5,6 +5,8 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+EntityCache/
+
 # Baked lighting data
 LightingData.asset
 
