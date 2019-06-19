@@ -5,6 +5,9 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+# Baked lighting data
+LightingData.asset*
+
 # Visual Studio cache directory
 .vs/
 
