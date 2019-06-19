@@ -6,7 +6,7 @@
 Assets/AssetStoreTools*
 
 # Baked lighting data
-LightingData.asset*
+LightingData.asset
 
 # Visual Studio cache directory
 .vs/
