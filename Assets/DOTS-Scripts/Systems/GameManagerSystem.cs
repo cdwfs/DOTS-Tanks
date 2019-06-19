@@ -76,7 +76,7 @@ public class GameManagerSystem : ComponentSystem
         EntityArchetype tankArchetype = World.EntityManager.CreateArchetype(typeof(TankPlayer), typeof(Translation), typeof(Rotation));
         
         Entity player1Entity = EntityManager.CreateEntity(tankArchetype);
-        EntityManager.SetComponentData(player1Entity, new TankPlayer { Score = });
+        EntityManager.SetComponentData(player1Entity, new TankPlayer { PlayerId = 0 });
 
     }
 }

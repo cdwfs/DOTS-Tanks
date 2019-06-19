@@ -3,5 +3,5 @@
 public struct TankPlayer : IComponentData
 {
     public int Score;
-    public int 
+    public int PlayerId;
 }
