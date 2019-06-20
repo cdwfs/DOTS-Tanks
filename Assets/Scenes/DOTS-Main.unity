@@ -406,7 +406,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShellPrefab: {fileID: 1483086822797274, guid: be3e26cbb7ea04512998152cec3a1ab8,
     type: 3}
-  TankPrefab: {fileID: 1503742628758662, guid: a8f27a2a4106b40a1b0e9f42eb3fd968, type: 3}
 --- !u!114 &1639973386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,4 +445,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10828632001d9ca45a5c6aad75295414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScoreToWin: 5
+  scoreToWin: 5
+  players:
+  - tankPrefab: {fileID: 1503742628758662, guid: c090eef6d021c614fa59d513a84c2b06,
+      type: 3}
+  - tankPrefab: {fileID: 5333319970669631787, guid: e2b5cdfbf5fb72c41ad853022ce5af2b,
+      type: 3}

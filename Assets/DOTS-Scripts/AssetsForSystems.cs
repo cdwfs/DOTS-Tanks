@@ -7,7 +7,6 @@ public class AssetsForSystems : MonoBehaviour, IConvertGameObjectToEntity, IDecl
 {
     // Asset bindings to be consumed by ECS component systems
     public GameObject ShellPrefab;
-    public GameObject TankPrefab;
     
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
@@ -16,6 +15,5 @@ public class AssetsForSystems : MonoBehaviour, IConvertGameObjectToEntity, IDecl
     public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
     {
         referencedPrefabs.Add(ShellPrefab);
-        referencedPrefabs.Add(TankPrefab);
     }
 }
