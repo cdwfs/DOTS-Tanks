@@ -6,8 +6,8 @@ using UnityEngine;
 public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 {
     public int playerId;
-    public float moveSpeed = 12f;
-    public float turnSpeed = 180f;
+    public float moveSpeed = 6f;
+    public float turnSpeed = 6f;
     public Transform fireTransform;
     public float muzzleVelocity;
     
