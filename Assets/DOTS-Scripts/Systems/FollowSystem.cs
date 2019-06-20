@@ -10,10 +10,12 @@ public class FollowSystem : ComponentSystem
     protected override void OnUpdate()
     {
         // Copy transforms from entity world to game object world
-        Entities.WithAll<FollowEntity>().ForEach((Transform t, ref LocalToWorld l) =>
+        Entities.WithAll<FollowEntity>().ForEach((Transform t, ref LocalToWorld l, ref FollowEntity f) =>
         {
-            t.position = l.Value.c3.xyz;
-            t.rotation = new Unity.Mathematics.quaternion(l.Value);
+            if (f.Position)
+                t.position = l.Value.c3.xyz;
+            if (f.Rotation)
+                t.rotation = new Unity.Mathematics.quaternion(l.Value);
         });
     }
 }
