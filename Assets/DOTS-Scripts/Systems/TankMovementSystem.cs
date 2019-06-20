@@ -6,12 +6,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using Unity.Physics;
 
-[UpdateInGroup(typeof(SimulationSystemGroup))]
-public class TankMovmentSystem : JobComponentSystem
+[UpdateBefore(typeof(TransformSystemGroup))]
+public class TankMovementSystem : JobComponentSystem
 {
-    struct MovementJob : IJobForEachWithEntity<PlayerInputState, TankMovementStats, PhysicsVelocity , Rotation>
+    struct MovementJob : IJobForEach<PlayerInputState, TankMovementStats, PhysicsVelocity , Rotation>
     {
-        public void Execute(Entity entity, int index, ref PlayerInputState inputState, ref TankMovementStats tankMovementStats, ref PhysicsVelocity physicsVelocity, ref Rotation rotation)
+        public void Execute(ref PlayerInputState inputState, ref TankMovementStats tankMovementStats, ref PhysicsVelocity physicsVelocity, ref Rotation rotation)
         {
             if (math.lengthsq(inputState.Move.y) > 0f)
             {
@@ -35,11 +35,6 @@ public class TankMovmentSystem : JobComponentSystem
                 tankMovementStats.rotating = false;
             }
         }
-    }
-    private PlayerInputState playerInputState;
-    protected override void OnCreate()
-    {
-        var inputSystem = World.GetOrCreateSystem<InputGatheringSystem>();
     }
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
