@@ -60,44 +60,41 @@ namespace Systems
         
         void MakeExplosion(float3 origin)
         {
-            unsafe
+            float3 min = new float3(origin.x - explosionRadius, origin.y - explosionRadius, origin.z - explosionRadius);
+            float3 max = new float3(origin.x + explosionRadius, origin.y + explosionRadius, origin.z + explosionRadius);
+            Aabb explosionBounds = new Aabb
             {
-                float3 min = new float3(origin.x - explosionRadius, origin.y - explosionRadius, origin.z - explosionRadius);
-                float3 max = new float3(origin.x + explosionRadius, origin.y + explosionRadius, origin.z + explosionRadius);
-                Aabb explosionBounds = new Aabb
-                {
-                    Min = min,
-                    Max = max,
-                };
+                Min = min,
+                Max = max,
+            };
 
-                OverlapAabbInput input = new OverlapAabbInput
-                {
-                    Aabb = explosionBounds,
-                    Filter = CollisionFilter.Default,
-                };
+            OverlapAabbInput input = new OverlapAabbInput
+            {
+                Aabb = explosionBounds,
+                Filter = CollisionFilter.Default,
+            };
                 
-                NativeList<int> rigidBodyIndexs = new NativeList<int>(256, Allocator.TempJob); // indexes into world.Bodies[]
+            NativeList<int> rigidBodyIndexs = new NativeList<int>(256, Allocator.TempJob); // indexes into world.Bodies[]
                 
-                BuildPhysicsWorld world = World.GetOrCreateSystem<BuildPhysicsWorld>();
-                if (world.PhysicsWorld.CollisionWorld.OverlapAabb(input, ref rigidBodyIndexs))
+            BuildPhysicsWorld world = World.GetOrCreateSystem<BuildPhysicsWorld>();
+            if (world.PhysicsWorld.CollisionWorld.OverlapAabb(input, ref rigidBodyIndexs))
+            {
+                for (int i = 0; i < rigidBodyIndexs.Length; i++)
                 {
-                    for (int i = 0; i < rigidBodyIndexs.Length; i++)
-                    {
-                        RigidBody body = world.PhysicsWorld.Bodies[rigidBodyIndexs[i]];
+                    RigidBody body = world.PhysicsWorld.Bodies[rigidBodyIndexs[i]];
                         
-                        float distance = math.distance(body.Entity.GetPosition(), origin);
-                        float force = (explosionRadius - distance)/explosionRadius * explosionForce;
+                    float distance = math.distance(body.Entity.GetPosition(), origin);
+                    float force = (explosionRadius - distance)/explosionRadius * explosionForce;
                         
-                        float3 toTank = body.Entity.GetPosition() - origin;
-                        float3 impulse = math.normalize(toTank) * force;
-                        impulse.y = explosionForceY;
+                    float3 toTank = body.Entity.GetPosition() - origin;
+                    float3 impulse = math.normalize(toTank) * force;
+                    impulse.y = explosionForceY;
                         
-                        body.Entity.ApplyImpulse(impulse, origin);
-                    }
+                    body.Entity.ApplyImpulse(impulse, origin);
                 }
-
-                rigidBodyIndexs.Dispose();
             }
+
+            rigidBodyIndexs.Dispose();
         }
 
     }
