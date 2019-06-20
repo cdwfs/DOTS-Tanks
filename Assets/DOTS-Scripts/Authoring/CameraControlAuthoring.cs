@@ -11,8 +11,6 @@ public class CameraControlAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     public float m_ScreenEdgeBuffer = 4f;
     public float m_MinSize = 6.5f;
     public float m_ZoomSpeed = 0.2f;
-
-    [HideInInspector] public Transform[] m_Targets;
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
         var camera = GetComponent<Camera>();

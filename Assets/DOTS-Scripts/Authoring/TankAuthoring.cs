@@ -9,7 +9,9 @@ public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     public float moveSpeed = 6f;
     public float turnSpeed = 6f;
     public Transform fireTransform;
-    public float muzzleVelocity;
+    public float minLaunchForce = 15.0f;
+    public float maxLaunchForce = 30.0f;
+    public float maxChargeTime = 0.75f;
     
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
@@ -29,7 +31,12 @@ public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
         });
         dstManager.AddComponentData(entity, new TankAttackStats
         {
-            MuzzleVelocity = muzzleVelocity,
+            MinLaunchForce = minLaunchForce,
+            MaxLaunchForce = maxLaunchForce,
+            ChargeSpeed = (maxLaunchForce - minLaunchForce) / maxChargeTime,
+            CurrentLaunchForce = minLaunchForce,
+            IsCharging = 0,
+
             ShellSpawnPositionOffset = fireTransform.localPosition,
             ShellSpawnRotationOffset = fireTransform.localRotation,
         });
