@@ -48,6 +48,7 @@ public class CameraControlSystem : ComponentSystem
     private float FindRequiredSize(float3 CameraPosition)
     {
         float size = 0f;
+        var desiredLocalPos = new float3();
         CameraControlComponent cameraControl = new CameraControlComponent();
         Entities.ForEach((Entity e, ref CameraControlComponent control) =>
         {
@@ -55,13 +56,11 @@ public class CameraControlSystem : ComponentSystem
         });
         Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref Translation targetTranslation) =>
         {
-            size = math.max(size, math.abs(targetTranslation.Value.y));
-            size = math.max(size, math.abs(targetTranslation.Value.x)/cameraControl.CameraAspect);
-
+            desiredLocalPos = targetTranslation.Value - desiredLocalPos;
         });
+        size = math.length(desiredLocalPos)/2;
         size += cameraControl.ScreenEdgeBuffer;
-        size += math.max(size,cameraControl.MinSize);
-
+        size = math.max(size,cameraControl.MinSize);
         return size;
     }
 }
