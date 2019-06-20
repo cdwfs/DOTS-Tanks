@@ -35,6 +35,5 @@ public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
         });
         dstManager.AddComponentData(entity, new PlayerInputState());
         dstManager.AddComponent(entity, typeof(CameraTarget));
-        dstManager.AddComponent(entity, typeof(Prefab));
     }
 }
