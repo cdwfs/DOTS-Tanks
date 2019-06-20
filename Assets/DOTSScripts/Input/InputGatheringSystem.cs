@@ -26,14 +26,13 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
     {
         // Create objects to hold the input
         // TODO - this is temp - should use the player array from GameManagerSystem
-        inputEntityArchetype = World.EntityManager.CreateArchetype(typeof(PlayerInputState));
-        player1Entity = EntityManager.CreateEntity(inputEntityArchetype);
-        player2Entity = EntityManager.CreateEntity(inputEntityArchetype);
+//        inputEntityArchetype = World.EntityManager.CreateArchetype(typeof(PlayerInputState));
+//        player1Entity = EntityManager.CreateEntity(inputEntityArchetype);
+//        player2Entity = EntityManager.CreateEntity(inputEntityArchetype);
 
         // Create input
         tankControls = new TanksControls();
         tankControls.InGame.SetCallbacks(this);
-        tankControls.InGame.Enable();
         
         // Query
         World.GetOrCreateSystem<GameManagerSystem>();
@@ -50,19 +49,38 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
     
     protected override void OnUpdate()
     {
+        if (player1Entity == Entity.Null || player2Entity == Entity.Null)
+        {
+            NativeArray<Entity> players = playersQuery.ToEntityArray(Allocator.TempJob);
+            ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
+            for (int i = 0; i < players.Length; i++)
+            {
+                TankPlayer tankPlayer = tankPlayers[players[i]];
+                if (tankPlayer.PlayerId == 0)
+                {
+                    player1Entity = players[i];
+                }
+                else if(tankPlayer.PlayerId == 1)
+                {
+                    player2Entity = players[i];
+                }
+            }
+            
+            players.Dispose();
+            tankControls.InGame.Enable();
+        }
+        
+        
+        PlayerInputState playerInputState = EntityManager.GetComponentData<PlayerInputState>(player1Entity);
+        if (playerInputState.Firing > 0f)
+        {
+            Debug.Log("Player Firing");
+        }
 
-        
-        
-//        PlayerInputState playerInputState = EntityManager.GetComponentData<PlayerInputState>(playerEntityB);
-//        if (playerInputState.Firing > 0f)
-//        {
-//            Debug.Log("Player 1 Firing");
-//        }
-//
-//        if (math.lengthsq(playerInputState.Move) > 0f)
-//        {
-//            Debug.Log("Player 1 moving");
-//        }
+        if (math.lengthsq(playerInputState.Move) > 0f)
+        {
+            Debug.Log("Player moving");
+        }
     }
 
     public void OnPlayer1Move(InputAction.CallbackContext context)

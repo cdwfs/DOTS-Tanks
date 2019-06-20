@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using DOTSInputs;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
@@ -18,6 +19,8 @@ public class GameManagerSystem : ComponentSystem
         {
             CurrentRound = 1,
         });
+        
+        CreateTanks();
     }
 
     protected override void OnUpdate()
@@ -72,11 +75,15 @@ public class GameManagerSystem : ComponentSystem
 
     void CreateTanks()
     {
-        // TODO - this archetype should b coming from a prefab
-        EntityArchetype tankArchetype = World.EntityManager.CreateArchetype(typeof(TankPlayer), typeof(Translation), typeof(Rotation));
+        // TODO - this archetype should be coming from a prefab
+        EntityArchetype tankArchetype = World.EntityManager.CreateArchetype(typeof(TankPlayer), typeof(Translation), typeof(Rotation), typeof(PlayerInputState));
         
         Entity player1Entity = EntityManager.CreateEntity(tankArchetype);
         EntityManager.SetComponentData(player1Entity, new TankPlayer { PlayerId = 0 });
+        
+        Entity player2Entity = EntityManager.CreateEntity(tankArchetype);
+        EntityManager.SetComponentData(player2Entity, new TankPlayer { PlayerId = 1 });
+
 
     }
 }
