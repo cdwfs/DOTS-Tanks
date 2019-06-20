@@ -8,6 +8,8 @@ public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
     public int playerId;
     public float moveSpeed = 12f;
     public float turnSpeed = 180f;
+    public Transform fireTransform;
+    public float muzzleVelocity;
     
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
@@ -20,6 +22,12 @@ public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
         {
             MoveSpeed = moveSpeed,
             TurnSpeed = turnSpeed,
+        });
+        dstManager.AddComponentData(entity, new TankAttackStats
+        {
+            MuzzleVelocity = muzzleVelocity,
+            ShellSpawnPositionOffset = fireTransform.localPosition,
+            ShellSpawnRotationOffset = fireTransform.localRotation,
         });
         dstManager.AddComponentData(entity, new PlayerInputState());
         dstManager.AddComponent(entity, typeof(CameraTarget));

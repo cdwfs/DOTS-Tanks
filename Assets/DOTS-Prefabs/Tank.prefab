@@ -95,6 +95,8 @@ MonoBehaviour:
   playerId: 0
   moveSpeed: 12
   turnSpeed: 180
+  fireTransform: {fileID: 4751462571394202}
+  muzzleVelocity: 20
 --- !u!114 &-1710816744730052525
 MonoBehaviour:
   m_ObjectHideFlags: 0

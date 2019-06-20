@@ -1,23 +1,37 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine.UIElements;
 
-[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateBefore(typeof(TransformSystemGroup))]
 public class TankFiringSystem : JobComponentSystem
 {
     //[BurstCompile] -- uncomment when burstable ECBs are enabled
-    struct SpawnShellsJob : IJobForEachWithEntity<PlayerInputState, Translation>
+    struct SpawnShellsJob : IJobForEachWithEntity<PlayerInputState, LocalToWorld, Rotation, TankAttackStats>
     {
         public EntityCommandBuffer.Concurrent CommandBuffer;
         public Entity ShellPrefab;
-        public void Execute(Entity tankEntity, int jobIndex, [ReadOnly] ref PlayerInputState inputState, [ReadOnly] ref Translation tankPosition)
+        public void Execute(Entity tankEntity, int jobIndex, ref PlayerInputState inputState,
+            [ReadOnly] ref LocalToWorld tankLocalToWorld, [ReadOnly] ref Rotation tankRotation, [ReadOnly] ref TankAttackStats attackStats)
         {
             if (inputState.Firing != 0)
             {
                 var shellEntity = CommandBuffer.Instantiate(jobIndex, ShellPrefab);
-                CommandBuffer.SetComponent(jobIndex, shellEntity, tankPosition);
+                CommandBuffer.SetComponent(jobIndex, shellEntity, new Translation
+                {
+                    Value = math.transform(tankLocalToWorld.Value, attackStats.ShellSpawnPositionOffset),
+                });
+                CommandBuffer.SetComponent(jobIndex, shellEntity, new Rotation
+                {
+                    Value = math.mul(tankRotation.Value, attackStats.ShellSpawnRotationOffset),
+                });
+                CommandBuffer.SetComponent(jobIndex, shellEntity, new PhysicsVelocity
+                {
+                    Linear = math.mul(attackStats.ShellSpawnRotationOffset, tankLocalToWorld.Forward) * attackStats.MuzzleVelocity,
+                });
+                inputState.Firing = 0;
             }
         }
     }
