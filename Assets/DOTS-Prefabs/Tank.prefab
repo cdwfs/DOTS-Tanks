@@ -94,8 +94,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
-  moveSpeed: 12
-  turnSpeed: 180
+  moveSpeed: 6
+  turnSpeed: 4
   fireTransform: {fileID: 4751462571394202}
   minLaunchForce: 15
   maxLaunchForce: 30

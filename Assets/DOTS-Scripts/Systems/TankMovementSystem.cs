@@ -35,7 +35,7 @@ public class TankMovementSystem : JobComponentSystem
             //}
             if (math.lengthsq(inputState.Move.x) > 0f)
             {
-                angular =  new float3(0, inputState.Move.x*tankMovementStats.MoveSpeed, 0);
+                angular =  new float3(0, inputState.Move.x*tankMovementStats.TurnSpeed, 0);
                 if (inputState.Move.y < 0) angular = -angular;
                 tankMovementStats.rotating = true;
             }
