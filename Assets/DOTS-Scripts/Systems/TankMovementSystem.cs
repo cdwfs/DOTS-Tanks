@@ -19,7 +19,7 @@ public class TankMovementSystem : JobComponentSystem
             float3 oldLinear = physicsVelocity.Linear;
             float3 oldAngular = physicsVelocity.Angular;
 
-            // damping tank velocities to toward zero
+            // damping tank velocities toward zero
             float3 linear = math.lerp(physicsVelocity.Linear, float3.zero, 0.5f);
             float3 angular = math.lerp(physicsVelocity.Angular, float3.zero, 0.5f);
 
