@@ -218,7 +218,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: -50
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -406,6 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShellPrefab: {fileID: 1483086822797274, guid: be3e26cbb7ea04512998152cec3a1ab8,
     type: 3}
+  TankPrefab: {fileID: 1503742628758662, guid: a8f27a2a4106b40a1b0e9f42eb3fd968, type: 3}
 --- !u!114 &1639973386
 MonoBehaviour:
   m_ObjectHideFlags: 0

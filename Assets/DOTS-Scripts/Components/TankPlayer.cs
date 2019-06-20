@@ -1,5 +1,7 @@
-﻿using Unity.Entities;
+﻿using System;
+using Unity.Entities;
 
+[Serializable]
 public struct TankPlayer : IComponentData
 {
     public int Score;

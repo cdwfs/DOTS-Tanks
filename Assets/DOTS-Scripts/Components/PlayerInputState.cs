@@ -1,11 +1,10 @@
+using System;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace DOTSInputs
+[Serializable]
+public struct PlayerInputState : IComponentData
 {
-    public struct PlayerInputState : IComponentData
-    {
-        public float Firing;
-        public float2 Move;
-    }
+    public float Firing;
+    public float2 Move;
 }

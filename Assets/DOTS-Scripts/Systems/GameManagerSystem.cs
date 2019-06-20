@@ -1,13 +1,14 @@
-﻿using DOTSInputs;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 
+[AlwaysUpdateSystem] // TODO: the query here assumes players already exist, but this is always the system that spawns the players.
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public class GameManagerSystem : ComponentSystem
 {
     private EntityQuery tankPlayerQuery;
     private ArchetypeChunkComponentType<TankPlayer> tankPlayerComponentType;
+    private Entity TankPrefab = Entity.Null;
     protected override void OnCreate()
     {
         tankPlayerQuery = GetEntityQuery(ComponentType.ReadWrite<TankPlayer>());
@@ -19,12 +20,36 @@ public class GameManagerSystem : ComponentSystem
         {
             CurrentRound = 1,
         });
-        
-        CreateTanks();
     }
 
     protected override void OnUpdate()
     {
+        // TODO: his block should be moved to OnCreate() once I figure out how to ensure it runs after the GameObject conversion system.
+        if (TankPrefab == Entity.Null)
+        {
+            var tankPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
+            {
+                All = new[] {ComponentType.ReadWrite<TankMovementStats>()},
+                Options = EntityQueryOptions.IncludePrefab,
+            });
+            int count = tankPrefabQuery.CalculateLength();
+            if (count == 0)
+            {
+                tankPrefabQuery.Dispose();
+                return; // in case no match was found for the first few frames
+            }
+            if (count == 1)
+            {
+                var prefabEntities = tankPrefabQuery.ToEntityArray(Allocator.TempJob);
+                TankPrefab = prefabEntities[0];
+                prefabEntities.Dispose();
+            }
+            tankPrefabQuery.Dispose();
+            
+            // Now that we have the prefab, spawn the initial set of tanks
+            CreateTanks();
+        }
+
         bool newGame = false;
         bool newRound = false;
         var tankPlayerChunks = tankPlayerQuery.CreateArchetypeChunkArray(Allocator.TempJob);
@@ -76,12 +101,10 @@ public class GameManagerSystem : ComponentSystem
     void CreateTanks()
     {
         // TODO - this archetype should be coming from a prefab
-        EntityArchetype tankArchetype = World.EntityManager.CreateArchetype(typeof(TankPlayer), typeof(Translation), typeof(Rotation), typeof(PlayerInputState));
-        
-        Entity player1Entity = EntityManager.CreateEntity(tankArchetype);
+        Entity player1Entity = EntityManager.Instantiate(TankPrefab);
         EntityManager.SetComponentData(player1Entity, new TankPlayer { PlayerId = 0 });
         
-        Entity player2Entity = EntityManager.CreateEntity(tankArchetype);
+        Entity player2Entity = EntityManager.Instantiate(TankPrefab);
         EntityManager.SetComponentData(player2Entity, new TankPlayer { PlayerId = 1 });
 
 

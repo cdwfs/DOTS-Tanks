@@ -1,5 +1,7 @@
-﻿using Unity.Entities;
+﻿using System;
+using Unity.Entities;
 
+[Serializable]
 public struct ShellStats : IComponentData
 {
     public float MaxDamage;
