@@ -4,7 +4,6 @@ using Unity.Jobs;
 using Unity.Transforms;
 using UnityEngine.UIElements;
 
-[AlwaysUpdateSystem] // TEMP
 [UpdateInGroup(typeof(SimulationSystemGroup))]
 public class TankFiringSystem : JobComponentSystem
 {
@@ -32,16 +31,20 @@ public class TankFiringSystem : JobComponentSystem
 
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
-        // This block should be moved to OnCreate() once I figure out how to ensure it
-        // runs after the GameObject conversion system.
+        // TODO: This block should be moved to OnCreate() once I figure out how to ensure it runs after the GameObject conversion system.
         if (ShellPrefab == Entity.Null)
         {
             var shellPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
             {
                 All = new[] {ComponentType.ReadWrite<ShellStats>()},
-                Options = EntityQueryOptions.Default | EntityQueryOptions.IncludePrefab,
+                Options = EntityQueryOptions.IncludePrefab,
             });
             int count = shellPrefabQuery.CalculateLength();
+            if (count == 0)
+            {
+                shellPrefabQuery.Dispose();
+                return inputDeps; // in case no match was found for the first few frames
+            }
             if (count == 1)
             {
                 var prefabEntities = shellPrefabQuery.ToEntityArray(Allocator.TempJob);
@@ -49,10 +52,6 @@ public class TankFiringSystem : JobComponentSystem
                 prefabEntities.Dispose();
             }
             shellPrefabQuery.Dispose();
-        }
-        if (ShellPrefab == Entity.Null)
-        {
-            return inputDeps; // in case no match was found for the first few frames
         }
 
         var spawnShellsJob = new SpawnShellsJob
