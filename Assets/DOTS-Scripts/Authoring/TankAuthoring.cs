@@ -18,6 +18,10 @@ public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
             PlayerId = playerId,
             Score = 0,
         });
+        dstManager.AddComponentData(entity, new PlayerHealth
+        {
+            Health = 100
+        });
         dstManager.AddComponentData(entity, new TankMovementStats
         {
             MoveSpeed = moveSpeed,
