@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Plugins.PlayerInput;
 
+[AlwaysUpdateSystem] // TEMP
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameActions
 {
@@ -19,6 +20,8 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
     private Entity player1Entity;
     private Entity player2Entity;
 
+    public EntityQuery playersQuery;
+
     protected override void OnCreate()
     {
         // Create input
@@ -27,17 +30,18 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
         
         // Query
         World.GetOrCreateSystem<GameManagerSystem>();
+        playersQuery = GetEntityQuery(new EntityQueryDesc
+        {
+            All = new[] { ComponentType.ReadOnly<TankPlayer>() }
+        });
     }
     
     protected override void OnUpdate()
     {
         if (player1Entity == Entity.Null || player2Entity == Entity.Null)
         {
-            var playersQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
-            {
-                All = new[] { ComponentType.ReadOnly<TankPlayer>() },
-            });
             int playerCount = playersQuery.CalculateLength();
+            
             if (playerCount > 0)
             {
                 var players = playersQuery.ToEntityArray(Allocator.TempJob);
@@ -57,7 +61,7 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
                 players.Dispose();
                 tankControls.InGame.Enable();
             }
-            playersQuery.Dispose();
+
             if (playerCount == 0)
             {
                 return; // no players spawned yet

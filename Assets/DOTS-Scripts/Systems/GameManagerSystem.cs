@@ -1,6 +1,5 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
-using Unity.Transforms;
 
 [AlwaysUpdateSystem] // TODO: the query here assumes players already exist, but this is always the system that spawns the players.
 [UpdateInGroup(typeof(InitializationSystemGroup))]
@@ -8,8 +7,7 @@ public class GameManagerSystem : ComponentSystem
 {
     private EntityQuery tankPlayerQuery;
     private ArchetypeChunkComponentType<TankPlayer> tankPlayerComponentType;
-    private Entity Player1TankPrefab = Entity.Null;
-    private Entity Player2TankPrefab = Entity.Null;
+
     protected override void OnCreate()
     {
         tankPlayerQuery = GetEntityQuery(ComponentType.ReadWrite<TankPlayer>());
@@ -25,42 +23,6 @@ public class GameManagerSystem : ComponentSystem
 
     protected override void OnUpdate()
     {
-        // TODO: his block should be moved to OnCreate() once I figure out how to ensure it runs after the GameObject conversion system.
-        if (Player1TankPrefab == Entity.Null || Player2TankPrefab == Entity.Null)
-        {
-            var tankPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
-            {
-                All = new[] {ComponentType.ReadWrite<TankPlayer>()},
-                Options = EntityQueryOptions.IncludePrefab,
-            });
-            int count = tankPrefabQuery.CalculateLength();
-            if (count == 0)
-            {
-                tankPrefabQuery.Dispose();
-                return; // in case no match was found for the first few frames
-            }
-            if (count == 2)
-            {
-                var prefabEntities = tankPrefabQuery.ToEntityArray(Allocator.TempJob);
-                // Figure out which prefab belongs to which player
-                if (EntityManager.GetComponentData<TankPlayer>(prefabEntities[0]).PlayerId == 1)
-                {
-                    Player1TankPrefab = prefabEntities[0];
-                    Player2TankPrefab = prefabEntities[1];
-                }
-                else
-                {
-                    Player1TankPrefab = prefabEntities[1];
-                    Player2TankPrefab = prefabEntities[0];
-                }
-                prefabEntities.Dispose();
-            }
-            tankPrefabQuery.Dispose();
-            
-            // Now that we have the prefab, spawn the initial set of tanks
-            CreateTanks();
-        }
-
         bool newGame = false;
         bool newRound = false;
         var tankPlayerChunks = tankPlayerQuery.CreateArchetypeChunkArray(Allocator.TempJob);
@@ -105,14 +67,6 @@ public class GameManagerSystem : ComponentSystem
             var gameProgress = GetSingleton<GameProgress>();
             gameProgress.CurrentRound = 1;
             SetSingleton(gameProgress);
-
-            CreateTanks();
         }
-    }
-
-    void CreateTanks()
-    {
-        Entity player1Entity = EntityManager.Instantiate(Player1TankPrefab);
-        Entity player2Entity = EntityManager.Instantiate(Player2TankPrefab);
     }
 }
