@@ -14,22 +14,12 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
     private TanksControls tankControls;
  
     private EntityQuery playersQuery;
-
     
-    
-    private EntityArchetype inputEntityArchetype;
-    // TODO - use the player array from the GameManagerSystem
     private Entity player1Entity;
     private Entity player2Entity;
 
     protected override void OnCreate()
     {
-        // Create objects to hold the input
-        // TODO - this is temp - should use the player array from GameManagerSystem
-//        inputEntityArchetype = World.EntityManager.CreateArchetype(typeof(PlayerInputState));
-//        player1Entity = EntityManager.CreateEntity(inputEntityArchetype);
-//        player2Entity = EntityManager.CreateEntity(inputEntityArchetype);
-
         // Create input
         tankControls = new TanksControls();
         tankControls.InGame.SetCallbacks(this);
