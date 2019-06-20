@@ -16,14 +16,24 @@ public class TankMovmentSystem : JobComponentSystem
             if (math.lengthsq(inputState.Move.y) > 0f)
             {
                 physicsVelocity.Linear = math.forward(rotation.Value)* inputState.Move.y*tankMovementStats.MoveSpeed;
-            }else
+                tankMovementStats.moving = true;
+            }
+            if (tankMovementStats.moving && math.lengthsq(inputState.Move.y) == 0f)
             {
+                tankMovementStats.moving = false;
                 physicsVelocity.Linear = 0;
+
             }
             if (math.lengthsq(inputState.Move.x) > 0f)
             {
-                physicsVelocity.Angular = new float3(0, inputState.Move.x*tankMovementStats.MoveSpeed, 0);
-            }else { physicsVelocity.Angular = 0; }
+                physicsVelocity.Angular =  new float3(0, inputState.Move.x*tankMovementStats.MoveSpeed, 0);
+                tankMovementStats.rotating = true;
+            }
+            if (tankMovementStats.rotating && math.lengthsq(inputState.Move.x) == 0f)
+            {
+                physicsVelocity.Angular = 0;
+                tankMovementStats.rotating = false;
+            }
         }
     }
     private PlayerInputState playerInputState;
@@ -34,7 +44,7 @@ public class TankMovmentSystem : JobComponentSystem
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         var movementJob = new MovementJob
-        {
+        { 
         }.Schedule(this, inputDeps);
         return movementJob;
     }
