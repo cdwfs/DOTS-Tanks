@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Plugins.PlayerInput;
 
-[AlwaysUpdateSystem]
+[UpdateInGroup(typeof(InitializationSystemGroup))]
 public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameActions
 {
     // TODO - TankControls should be stored in its own singleton somewhere, and just used by systems, rather than owned here.
@@ -16,8 +16,6 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
     
     private TanksControls tankControls;
  
-    private EntityQuery playersQuery;
-    
     private Entity player1Entity;
     private Entity player2Entity;
 
@@ -29,56 +27,42 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
         
         // Query
         World.GetOrCreateSystem<GameManagerSystem>();
-        EntityQueryDesc desc = new EntityQueryDesc
-        {
-            All = new ComponentType[]
-            {
-                ComponentType.ReadOnly<TankPlayer>()
-            }
-        };
-
-        playersQuery = GetEntityQuery(desc);
     }
     
     protected override void OnUpdate()
     {
         if (player1Entity == Entity.Null || player2Entity == Entity.Null)
         {
-            NativeArray<Entity> players = playersQuery.ToEntityArray(Allocator.TempJob);
-            if (players.Length == 0)
+            var playersQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
             {
+                All = new[] { ComponentType.ReadOnly<TankPlayer>() },
+            });
+            int playerCount = playersQuery.CalculateLength();
+            if (playerCount > 0)
+            {
+                var players = playersQuery.ToEntityArray(Allocator.TempJob);
+                ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
+                for (int i = 0; i < players.Length; i++)
+                {
+                    TankPlayer tankPlayer = tankPlayers[players[i]];
+                    if (tankPlayer.PlayerId == 0)
+                    {
+                        player1Entity = players[i];
+                    }
+                    else if(tankPlayer.PlayerId == 1)
+                    {
+                        player2Entity = players[i];
+                    }
+                }
                 players.Dispose();
-                return; // players haven't been spawned yet, nothing to do
+                tankControls.InGame.Enable();
             }
-            ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
-            for (int i = 0; i < players.Length; i++)
+            playersQuery.Dispose();
+            if (playerCount == 0)
             {
-                TankPlayer tankPlayer = tankPlayers[players[i]];
-                if (tankPlayer.PlayerId == 0)
-                {
-                    player1Entity = players[i];
-                }
-                else if(tankPlayer.PlayerId == 1)
-                {
-                    player2Entity = players[i];
-                }
+                return; // no players spawned yet
             }
-            
-            players.Dispose();
-            tankControls.InGame.Enable();
         }
-        
-        
-//        PlayerInputState playerInputState = EntityManager.GetComponentData<PlayerInputState>(player1Entity);
-//        if (playerInputState.Firing > 0f)
-//        {
-//            Debug.Log("Player Firing");
-//        }
-//
-//        if (math.lengthsq(playerInputState.Move) > 0f)
-//        {
-//            Debug.Log("Player moving");
-//        }
     }
 
     public void OnPlayer1Move(InputAction.CallbackContext context)
@@ -111,10 +95,5 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
         PlayerInputState playerInputState = EntityManager.GetComponentData<PlayerInputState>(player);
         playerInputState.Firing = context.ReadValue<float>();
         EntityManager.SetComponentData(player, playerInputState);
-    }
-
-    public void OnNewaction(InputAction.CallbackContext context)
-    {
-        //
     }
 }
