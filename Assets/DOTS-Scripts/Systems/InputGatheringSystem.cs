@@ -39,6 +39,11 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
         if (player1Entity == Entity.Null || player2Entity == Entity.Null)
         {
             NativeArray<Entity> players = playersQuery.ToEntityArray(Allocator.TempJob);
+            if (players.Length == 0)
+            {
+                players.Dispose();
+                return; // players haven't been spawned yet, nothing to do
+            }
             ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
             for (int i = 0; i < players.Length; i++)
             {
