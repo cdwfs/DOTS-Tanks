@@ -196,6 +196,60 @@
                     "modifiers": ""
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "5ae7d7ae-3ebc-4926-84c0-00cf86bfafc6",
+            "actions": [
+                {
+                    "name": "MouseLeftButton",
+                    "id": "040640d9-a15a-4fc8-b5e6-fad26e67581a",
+                    "expectedControlLayout": "",
+                    "continuous": false,
+                    "passThrough": false,
+                    "initialStateCheck": false,
+                    "processors": "",
+                    "interactions": "",
+                    "bindings": []
+                },
+                {
+                    "name": "MousePosition",
+                    "id": "d30992a9-56cc-4790-9013-fb59a5e1da07",
+                    "expectedControlLayout": "",
+                    "continuous": false,
+                    "passThrough": false,
+                    "initialStateCheck": false,
+                    "processors": "",
+                    "interactions": "",
+                    "bindings": []
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "65914105-10be-4cdf-b83d-10a4ae7b7b23",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseLeftButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                },
+                {
+                    "name": "",
+                    "id": "36ac26e1-f9b1-4f4f-967e-282d965765ac",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                }
+            ]
         }
     ],
     "controlSchemes": []

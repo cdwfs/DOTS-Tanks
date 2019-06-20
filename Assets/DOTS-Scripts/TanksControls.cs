@@ -210,6 +210,60 @@ public class TanksControls : IInputActionCollection
                     ""modifiers"": """"
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""5ae7d7ae-3ebc-4926-84c0-00cf86bfafc6"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseLeftButton"",
+                    ""id"": ""040640d9-a15a-4fc8-b5e6-fad26e67581a"",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""bindings"": []
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""id"": ""d30992a9-56cc-4790-9013-fb59a5e1da07"",
+                    ""expectedControlLayout"": """",
+                    ""continuous"": false,
+                    ""passThrough"": false,
+                    ""initialStateCheck"": false,
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""bindings"": []
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""65914105-10be-4cdf-b83d-10a4ae7b7b23"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""36ac26e1-f9b1-4f4f-967e-282d965765ac"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false,
+                    ""modifiers"": """"
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -220,6 +274,10 @@ public class TanksControls : IInputActionCollection
         m_InGame_Player2Move = m_InGame.GetAction("Player2Move");
         m_InGame_Player1Shoot = m_InGame.GetAction("Player1Shoot");
         m_InGame_Player2Shoot = m_InGame.GetAction("Player2Shoot");
+        // UI
+        m_UI = asset.GetActionMap("UI");
+        m_UI_MouseLeftButton = m_UI.GetAction("MouseLeftButton");
+        m_UI_MousePosition = m_UI.GetAction("MousePosition");
     }
 
     ~TanksControls()
@@ -332,11 +390,64 @@ public class TanksControls : IInputActionCollection
             return new InGameActions(this);
         }
     }
+
+    // UI
+    private InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private InputAction m_UI_MouseLeftButton;
+    private InputAction m_UI_MousePosition;
+    public struct UIActions
+    {
+        private TanksControls m_Wrapper;
+        public UIActions(TanksControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseLeftButton { get { return m_Wrapper.m_UI_MouseLeftButton; } }
+        public InputAction @MousePosition { get { return m_Wrapper.m_UI_MousePosition; } }
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled { get { return Get().enabled; } }
+        public InputActionMap Clone() { return Get().Clone(); }
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                MouseLeftButton.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLeftButton;
+                MouseLeftButton.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLeftButton;
+                MouseLeftButton.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMouseLeftButton;
+                MousePosition.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
+                MousePosition.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
+                MousePosition.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMousePosition;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                MouseLeftButton.started += instance.OnMouseLeftButton;
+                MouseLeftButton.performed += instance.OnMouseLeftButton;
+                MouseLeftButton.canceled += instance.OnMouseLeftButton;
+                MousePosition.started += instance.OnMousePosition;
+                MousePosition.performed += instance.OnMousePosition;
+                MousePosition.canceled += instance.OnMousePosition;
+            }
+        }
+    }
+    public UIActions @UI
+    {
+        get
+        {
+            return new UIActions(this);
+        }
+    }
     public interface IInGameActions
     {
         void OnPlayer1Move(InputAction.CallbackContext context);
         void OnPlayer2Move(InputAction.CallbackContext context);
         void OnPlayer1Shoot(InputAction.CallbackContext context);
         void OnPlayer2Shoot(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnMouseLeftButton(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
     }
 }
