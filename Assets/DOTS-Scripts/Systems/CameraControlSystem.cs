@@ -33,7 +33,7 @@ public class CameraControlSystem : ComponentSystem
         float3 averagePos = new float3();
         int numTargets = 0;
 
-        Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref CameraTarget target, ref Translation translation) =>
+        Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref Translation translation) =>
         {
             averagePos += translation.Value;
             numTargets++;
@@ -53,7 +53,7 @@ public class CameraControlSystem : ComponentSystem
         {
             cameraControl = control;
         });
-        Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref CameraTarget target, ref Translation targetTranslation) =>
+        Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref Translation targetTranslation) =>
         {
             size = math.max(size, math.abs(targetTranslation.Value.y));
             size = math.max(size, math.abs(targetTranslation.Value.x)/cameraControl.CameraAspect);
