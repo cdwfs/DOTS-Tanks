@@ -11,6 +11,12 @@ using UnityEngine.InputSystem.Plugins.PlayerInput;
 [AlwaysUpdateSystem]
 public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameActions
 {
+    // TODO - TankControls should be stored in its own singleton somewhere, and just used by systems, rather than owned here.
+    public TanksControls TanksControls
+    {
+        get { return tankControls;  }
+    }
+    
     private TanksControls tankControls;
  
     private EntityQuery playersQuery;
@@ -61,16 +67,16 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
         }
         
         
-        PlayerInputState playerInputState = EntityManager.GetComponentData<PlayerInputState>(player1Entity);
-        if (playerInputState.Firing > 0f)
-        {
-            Debug.Log("Player Firing");
-        }
-
-        if (math.lengthsq(playerInputState.Move) > 0f)
-        {
-            Debug.Log("Player moving");
-        }
+//        PlayerInputState playerInputState = EntityManager.GetComponentData<PlayerInputState>(player1Entity);
+//        if (playerInputState.Firing > 0f)
+//        {
+//            Debug.Log("Player Firing");
+//        }
+//
+//        if (math.lengthsq(playerInputState.Move) > 0f)
+//        {
+//            Debug.Log("Player moving");
+//        }
     }
 
     public void OnPlayer1Move(InputAction.CallbackContext context)
