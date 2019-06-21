@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using System;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -66,33 +67,31 @@ public class TankFiringSystem : JobComponentSystem
     protected override void OnCreate()
     {
         beginInitEcbSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
+        // We explicitly create this query to force the system to only start running if there are player entities.
+        // Otherwise, the system will always update once before the implicit Query from the IJobForEach is generated,
+        // which causes the Shell prefab lookup to fail in Scenes where the prefab doesn't exist.
+        this.GetEntityQueryForIJobForEach(typeof(SpawnShellsJob));
+    }
+
+    protected override void OnStartRunning()
+    {
+        var shellPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
+        {
+            All = new[] {ComponentType.ReadWrite<ShellStats>()},
+            Options = EntityQueryOptions.IncludePrefab,
+        });
+        if (shellPrefabQuery.CalculateLength() != 1)
+        {
+            throw new InvalidOperationException("No Shell prefab detected?");
+        }
+        var prefabEntities = shellPrefabQuery.ToEntityArray(Allocator.TempJob);
+        ShellPrefab = prefabEntities[0];
+        prefabEntities.Dispose();
+        shellPrefabQuery.Dispose();
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
-        // TODO: This block should be moved to OnCreate() once I figure out how to ensure it runs after the GameObject conversion system.
-        if (ShellPrefab == Entity.Null)
-        {
-            var shellPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
-            {
-                All = new[] {ComponentType.ReadWrite<ShellStats>()},
-                Options = EntityQueryOptions.IncludePrefab,
-            });
-            int count = shellPrefabQuery.CalculateLength();
-            if (count == 0)
-            {
-                shellPrefabQuery.Dispose();
-                return inputDeps; // in case no match was found for the first few frames
-            }
-            if (count == 1)
-            {
-                var prefabEntities = shellPrefabQuery.ToEntityArray(Allocator.TempJob);
-                ShellPrefab = prefabEntities[0];
-                prefabEntities.Dispose();
-            }
-            shellPrefabQuery.Dispose();
-        }
-
         var spawnShellsJob = new SpawnShellsJob
         {
             CommandBuffer = beginInitEcbSystem.CreateCommandBuffer().ToConcurrent(),

@@ -1,26 +1,22 @@
-﻿using Unity.Collections;
+﻿using System;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Plugins.PlayerInput;
 
-[AlwaysUpdateSystem] // TEMP
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameActions
 {
     // TODO - TankControls should be stored in its own singleton somewhere, and just used by systems, rather than owned here.
-    public TanksControls TanksControls
-    {
-        get { return tankControls;  }
-    }
-    
-    private TanksControls tankControls;
- 
-    private Entity player1Entity;
-    private Entity player2Entity;
+    public TanksControls TanksControls => tankControls;
+    TanksControls tankControls;
 
-    public EntityQuery playersQuery;
+    EntityQuery playersQuery;
+    
+    Entity player1Entity;
+    Entity player2Entity;
 
     protected override void OnCreate()
     {
@@ -29,44 +25,38 @@ public class InputGatheringSystem : ComponentSystem, TanksControls.IInGameAction
         tankControls.InGame.SetCallbacks(this);
         
         // Query
-        World.GetOrCreateSystem<GameManagerSystem>();
         playersQuery = GetEntityQuery(new EntityQueryDesc
         {
             All = new[] { ComponentType.ReadOnly<TankPlayer>() }
         });
     }
-    
-    protected override void OnUpdate()
-    {
-        if (player1Entity == Entity.Null || player2Entity == Entity.Null)
-        {
-            int playerCount = playersQuery.CalculateLength();
-            
-            if (playerCount > 0)
-            {
-                var players = playersQuery.ToEntityArray(Allocator.TempJob);
-                ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
-                for (int i = 0; i < players.Length; i++)
-                {
-                    TankPlayer tankPlayer = tankPlayers[players[i]];
-                    if (tankPlayer.PlayerId == 0)
-                    {
-                        player1Entity = players[i];
-                    }
-                    else if(tankPlayer.PlayerId == 1)
-                    {
-                        player2Entity = players[i];
-                    }
-                }
-                players.Dispose();
-                tankControls.InGame.Enable();
-            }
 
-            if (playerCount == 0)
+    protected override void OnStartRunning()
+    {
+        if (playersQuery.CalculateLength() == 0)
+        {
+            throw new InvalidOperationException("no player tanks detected");
+        }
+        var players = playersQuery.ToEntityArray(Allocator.TempJob);
+        ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
+        for (int i = 0; i < players.Length; i++)
+        {
+            TankPlayer tankPlayer = tankPlayers[players[i]];
+            if (tankPlayer.PlayerId == 0)
             {
-                return; // no players spawned yet
+                player1Entity = players[i];
+            }
+            else if(tankPlayer.PlayerId == 1)
+            {
+                player2Entity = players[i];
             }
         }
+        players.Dispose();
+        tankControls.InGame.Enable();
+    }
+
+    protected override void OnUpdate()
+    {
     }
 
     public void OnPlayer1Move(InputAction.CallbackContext context)
