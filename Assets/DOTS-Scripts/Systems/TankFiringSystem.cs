@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using System;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -68,31 +69,25 @@ public class TankFiringSystem : JobComponentSystem
         beginInitEcbSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
     }
 
+    protected override void OnStartRunning()
+    {
+        var shellPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
+        {
+            All = new[] {ComponentType.ReadWrite<ShellStats>()},
+            Options = EntityQueryOptions.IncludePrefab,
+        });
+        if (shellPrefabQuery.CalculateLength() != 1)
+        {
+            throw new InvalidOperationException("No Shell prefab detected?");
+        }
+        var prefabEntities = shellPrefabQuery.ToEntityArray(Allocator.TempJob);
+        ShellPrefab = prefabEntities[0];
+        prefabEntities.Dispose();
+        shellPrefabQuery.Dispose();
+    }
+
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
-        // TODO: This block should be moved to OnCreate() once I figure out how to ensure it runs after the GameObject conversion system.
-        if (ShellPrefab == Entity.Null)
-        {
-            var shellPrefabQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
-            {
-                All = new[] {ComponentType.ReadWrite<ShellStats>()},
-                Options = EntityQueryOptions.IncludePrefab,
-            });
-            int count = shellPrefabQuery.CalculateLength();
-            if (count == 0)
-            {
-                shellPrefabQuery.Dispose();
-                return inputDeps; // in case no match was found for the first few frames
-            }
-            if (count == 1)
-            {
-                var prefabEntities = shellPrefabQuery.ToEntityArray(Allocator.TempJob);
-                ShellPrefab = prefabEntities[0];
-                prefabEntities.Dispose();
-            }
-            shellPrefabQuery.Dispose();
-        }
-
         var spawnShellsJob = new SpawnShellsJob
         {
             CommandBuffer = beginInitEcbSystem.CreateCommandBuffer().ToConcurrent(),
