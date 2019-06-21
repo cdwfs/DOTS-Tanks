@@ -11,22 +11,35 @@ public class AerialAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
-        var rotations = conversionSystem.GetComponentDataFromEntity<Rotation>();
+        var entity0 = conversionSystem.GetPrimaryEntity(Node0);
+        var entity1 = conversionSystem.GetPrimaryEntity(Node1);
+        var entity2 = conversionSystem.GetPrimaryEntity(Node2);
+        var entity3 = conversionSystem.GetPrimaryEntity(Node3);
 
+        // Reparent the entities into a hierarchy
+        {
+            var p = dstManager.GetComponentData<Parent>(entity1);
+            p.Value = entity0;
+            dstManager.GetComponentData<Parent>(entity1);
+        }
+        {
+            var p = dstManager.GetComponentData<Parent>(entity2);
+            p.Value = entity1;
+            dstManager.GetComponentData<Parent>(entity2);
+        }
+        {
+            var p = dstManager.GetComponentData<Parent>(entity3);
+            p.Value = entity2;
+            dstManager.GetComponentData<Parent>(entity3);
+        }
+
+        // Add aerial component
         var data = new Aerial()
         {
-            Entity0 = conversionSystem.GetPrimaryEntity(Node0),
-            ReferenceRotation0 = Node0.transform.rotation,
-            Entity1 = conversionSystem.GetPrimaryEntity(Node1),
-            ReferenceRotation1 = Node1.transform.rotation,
-            Entity2 = conversionSystem.GetPrimaryEntity(Node2),
-            ReferenceRotation2 = Node2.transform.rotation,
-            Entity3 = conversionSystem.GetPrimaryEntity(Node3),
-            ReferenceRotation3 = Node3.transform.rotation,
-            WobbleMagnitude = 0,
-            WobbleTime = 0
+            Entity0 = entity0,
+            Entity1 = entity1,
+            Entity2 = entity2
         };
-
         dstManager.AddComponentData(entity, data);
     }
 }
