@@ -5,7 +5,7 @@ namespace Components
 {
     public struct EngineSounds : ISharedComponentData
     {
-        public AudioClip Driving;
-        public AudioClip Idle;
+//        public AudioClip Driving;
+//        public AudioClip Idle;
     }
 }

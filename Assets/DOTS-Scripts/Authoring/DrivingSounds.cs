@@ -11,11 +11,11 @@ namespace Unity.Physics.Authoring
         
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            dstManager.AddSharedComponentData(entity, new EngineSounds{ Idle = IdleClip, Driving = DrivingClip});
+//            dstManager.AddSharedComponentData(entity, new EngineSounds{ Idle = IdleClip, Driving = DrivingClip});
             
             // TODO - find the ID of the player's tank entity
-            int playerId = GetComponentInParent<TankAuthoring>().playerId;
-            dstManager.AddComponentData(entity, new PlayerInputState { PlayerId = playerId });
+//            int playerId = GetComponentInParent<TankAuthoring>().playerId;
+//            dstManager.AddComponentData(entity, new PlayerInputState { PlayerId = playerId });
         }
     }
 }
