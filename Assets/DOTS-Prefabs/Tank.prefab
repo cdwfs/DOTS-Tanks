@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LockX: 1
-  LockY: 1
+  LockY: 0
   LockZ: 1
 --- !u!1 &1542776907038018
 GameObject:
@@ -1173,7 +1173,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IdleClip: {fileID: 0}
   DrivingClip: {fileID: 0}
-  AudioSource: {fileID: 0}
 --- !u!1 &7909725137705440983
 GameObject:
   m_ObjectHideFlags: 0
