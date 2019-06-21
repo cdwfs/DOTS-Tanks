@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 195792, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 486730, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -181,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19807510, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: playOnAwake
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19807510, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: stopAction
@@ -189,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19846844, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: playOnAwake
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 113952, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: m_IsActive
@@ -201,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19861370, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: playOnAwake
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}

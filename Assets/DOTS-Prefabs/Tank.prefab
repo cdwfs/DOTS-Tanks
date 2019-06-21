@@ -169,7 +169,7 @@ MonoBehaviour:
       m_Value: 0101010101010101010101010101010101010101010101010101010101010101
     m_RaisesCollisionEvents:
       m_Override: 0
-      m_Value: 0
+      m_Value: 1
     m_CustomFlags:
       m_Override: 0
       m_Value: 0000000000000000
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OverrideDefaultMassDistribution: 1
   m_CenterOfMass:
     x: 0
-    y: -2
+    y: -5
     z: 0
   m_Orientation:
     Value:
@@ -1444,10 +1444,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 19895962, guid: 723ba6b9282e94a50b5093435bdcf355, type: 3}
-      propertyPath: useRigidbodyForVelocity
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 723ba6b9282e94a50b5093435bdcf355, type: 3}
 --- !u!4 &455157696265647962 stripped
@@ -1510,10 +1506,6 @@ PrefabInstance:
     - target: {fileID: 496482, guid: 723ba6b9282e94a50b5093435bdcf355, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19895962, guid: 723ba6b9282e94a50b5093435bdcf355, type: 3}
-      propertyPath: useRigidbodyForVelocity
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 723ba6b9282e94a50b5093435bdcf355, type: 3}
