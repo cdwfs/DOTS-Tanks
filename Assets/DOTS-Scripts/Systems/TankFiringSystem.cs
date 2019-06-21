@@ -67,6 +67,19 @@ public class TankFiringSystem : JobComponentSystem
     protected override void OnCreate()
     {
         beginInitEcbSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
+        // We explicitly create this query to force the system to only start running if there are player entities.
+        // Otherwise, the system will always update once before the implicit Query from the IJobForEach is generated,
+        // which causes the Shell prefab lookup to fail in Scenes where the prefab doesn't exist.
+        GetEntityQuery(new EntityQueryDesc
+        {
+            All = new[]
+            {
+                ComponentType.ReadOnly<PlayerInputState>(),
+                ComponentType.ReadOnly<LocalToWorld>(),
+                ComponentType.ReadOnly<Rotation>(),
+                ComponentType.ReadWrite<TankAttackStats>(),
+            }
+        });
     }
 
     protected override void OnStartRunning()
