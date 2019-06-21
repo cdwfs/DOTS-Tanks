@@ -1,7 +1,6 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
 
-[AlwaysUpdateSystem] // TODO: the query here assumes players already exist, but this is always the system that spawns the players.
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public class GameManagerSystem : ComponentSystem
 {
