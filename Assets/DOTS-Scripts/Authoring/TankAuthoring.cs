@@ -1,5 +1,8 @@
 ﻿using Unity.Entities;
 using UnityEngine;
+#if (TERRAFORM)
+using Terraform.Component;
+#endif
 
 public class TankAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 {

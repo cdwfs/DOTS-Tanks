@@ -137,7 +137,7 @@ MonoBehaviour:
     Radius: 0.8
     Axis: 1
   m_SphereRadius: 0.85
-  m_ConvexRadius: 0.25
+  m_ConvexRadius: 0.5
   m_CustomMesh: {fileID: 0}
   m_Material:
     m_SupportsTemplate: 1
@@ -148,7 +148,7 @@ MonoBehaviour:
     m_Friction:
       m_Override: 0
       m_Value:
-        Value: 0.5
+        Value: 0.65
         CombineMode: 0
     m_Restitution:
       m_Override: 0
@@ -192,10 +192,10 @@ MonoBehaviour:
     y: 0
     z: 0
   m_GravityFactor: 1
-  m_OverrideDefaultMassDistribution: 0
+  m_OverrideDefaultMassDistribution: 1
   m_CenterOfMass:
     x: 0
-    y: 0
+    y: -2
     z: 0
   m_Orientation:
     Value:
@@ -1173,7 +1173,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IdleClip: {fileID: 0}
   DrivingClip: {fileID: 0}
-  AudioSource: {fileID: 0}
 --- !u!1 &7909725137705440983
 GameObject:
   m_ObjectHideFlags: 0
