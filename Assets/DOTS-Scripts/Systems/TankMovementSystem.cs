@@ -26,24 +26,12 @@ public class TankMovementSystem : JobComponentSystem
             if (math.lengthsq(inputState.Move.y) > 0f)
             {
                 linear = math.forward(rotation.Value)* inputState.Move.y*tankMovementStats.MoveSpeed;
-                tankMovementStats.moving = true;
             }
-            //if (tankMovementStats.moving && math.lengthsq(inputState.Move.y) == 0f)
-            //{
-            //    linear = math.lerp(physicsVelocity.Linear, float3.zero, 0.5f);
-            //    tankMovementStats.moving = math.lengthsq(linear) > 0.01f;
-            //}
             if (math.lengthsq(inputState.Move.x) > 0f)
             {
                 angular =  new float3(0, inputState.Move.x*tankMovementStats.TurnSpeed, 0);
                 if (inputState.Move.y < 0) angular = -angular;
-                tankMovementStats.rotating = true;
             }
-            //if (tankMovementStats.rotating && math.lengthsq(inputState.Move.x) == 0f)
-            //{
-            //    angular = math.lerp(physicsVelocity.Angular, float3.zero, 0.5f);
-            //    tankMovementStats.rotating = math.lengthsq(angular) > 0.01f;
-            //}
 
             // reapply linear elements that are not controlled
             linear.y = oldLinear.y;
