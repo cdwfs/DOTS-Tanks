@@ -46,7 +46,7 @@ public class ShellExplosionSystem : JobComponentSystem
         base.OnDestroy();
     }
 
-    //[BurstCompile]
+    //[BurstCompile] -- something in here isn't burst-compatible
     struct ShellExplosionJob : ICollisionEventsJob
     {
         [ReadOnly] public ComponentDataFromEntity<ShellStats> ShellStatsGroup;
@@ -124,7 +124,7 @@ public class ShellExplosionSystem : JobComponentSystem
     }
 }
 
-[UpdateAfter(typeof(ShellExplosionSystem))]
+[UpdateBefore(typeof(ShellExplosionSystem))]
 public class SpawnShellExplosionSystem : ComponentSystem
 {
     ShellExplosionSystem m_ShellExplosionSystem;
