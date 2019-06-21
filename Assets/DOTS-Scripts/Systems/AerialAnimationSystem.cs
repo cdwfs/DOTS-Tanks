@@ -20,7 +20,7 @@ public class AerialAnimationSystem : JobComponentSystem
         public float DeltaTime;
         
         [BurstCompile]
-        public void Execute(ref Aerial aerial, ref PlayerInputState playerInput)
+        public void Execute(ref Aerial aerial, [ReadOnly] ref PlayerInputState playerInput)
         {
             // Initialize reference rotations
             if (math.Equals(aerial.ReferenceRotation1.value, float4.zero))
