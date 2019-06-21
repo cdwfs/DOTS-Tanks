@@ -3,12 +3,14 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Physics.Systems;
 using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Jobs;
 
 [UpdateInGroup(typeof(SimulationSystemGroup))]
-[UpdateAfter(typeof(TransformSystemGroup))]
+[UpdateAfter(typeof(EndFramePhysicsSystem))]
+[UpdateBefore(typeof(TransformSystemGroup))]
 public class FollowSystem : JobComponentSystem
 {
     EntityQuery m_FollowTranslationGroup;
