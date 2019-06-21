@@ -22,13 +22,6 @@ public class AerialAnimationSystem : JobComponentSystem
         [BurstCompile]
         public void Execute(ref Aerial aerial, [ReadOnly] ref PlayerInputState playerInput)
         {
-            // Initialize reference rotations
-            if (math.Equals(aerial.ReferenceRotation1.value, float4.zero))
-            {
-                aerial.ReferenceRotation1 = RotationFromEntity[aerial.Entity1].Value;
-                aerial.ReferenceRotation2 = RotationFromEntity[aerial.Entity2].Value;
-            }
-
             // Update bend angle
             if(playerInput.Move.y != 0)
             {
@@ -38,12 +31,12 @@ public class AerialAnimationSystem : JobComponentSystem
             else
             {
                 // apply damped spring
-                aerial.BendSpeed -= aerial.BendAngle + 0.05f * aerial.BendSpeed;
+                aerial.BendSpeed -= aerial.BendAngle + 0.025f * aerial.BendSpeed;
                 aerial.BendAngle += aerial.BendSpeed * DeltaTime;
             }
 
             // Update transforms
-            var delta = quaternion.EulerXYZ(0, 0, 1.5f * aerial.BendAngle);
+            var delta = quaternion.EulerXYZ(0, 0, 0.6f * aerial.BendAngle);
 
             var data1 = RotationFromEntity[aerial.Entity1];
             data1.Value = math.mul(aerial.ReferenceRotation1, delta);

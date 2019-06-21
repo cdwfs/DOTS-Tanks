@@ -20,17 +20,23 @@ public class AerialAuthoring : MonoBehaviour, IConvertGameObjectToEntity
         {
             var p = dstManager.GetComponentData<Parent>(entity1);
             p.Value = entity0;
-            dstManager.GetComponentData<Parent>(entity1);
+            dstManager.SetComponentData(entity1, p);
+            dstManager.SetComponentData(entity1, new Translation { Value = Node0.transform.InverseTransformPoint(Node1.transform.position) });
+            dstManager.SetComponentData(entity1, new Rotation { Value = Quaternion.Inverse(Node0.transform.rotation) * Node1.transform.rotation });
         }
         {
             var p = dstManager.GetComponentData<Parent>(entity2);
             p.Value = entity1;
-            dstManager.GetComponentData<Parent>(entity2);
+            dstManager.SetComponentData(entity2, p);
+            dstManager.SetComponentData(entity2, new Translation { Value = Node1.transform.InverseTransformPoint(Node2.transform.position) });
+            dstManager.SetComponentData(entity2, new Rotation { Value = Quaternion.Inverse(Node1.transform.rotation) * Node2.transform.rotation });
         }
         {
             var p = dstManager.GetComponentData<Parent>(entity3);
             p.Value = entity2;
-            dstManager.GetComponentData<Parent>(entity3);
+            dstManager.SetComponentData(entity3, p);
+            dstManager.SetComponentData(entity3, new Translation { Value = Node2.transform.InverseTransformPoint(Node3.transform.position) });
+            dstManager.SetComponentData(entity3, new Rotation { Value = Quaternion.Inverse(Node2.transform.rotation) * Node3.transform.rotation });
         }
 
         // Add aerial component
@@ -38,7 +44,9 @@ public class AerialAuthoring : MonoBehaviour, IConvertGameObjectToEntity
         {
             Entity0 = entity0,
             Entity1 = entity1,
-            Entity2 = entity2
+            ReferenceRotation1 = dstManager.GetComponentData<Rotation>(entity1).Value,
+            Entity2 = entity2,
+            ReferenceRotation2 = dstManager.GetComponentData<Rotation>(entity2).Value
         };
         dstManager.AddComponentData(entity, data);
     }
