@@ -52,7 +52,7 @@ namespace Systems
                 var rotationGroup = GetComponentDataFromEntity<Rotation>(true);
                 var physicsVelocityGroup = GetComponentDataFromEntity<PhysicsVelocity>();
                 var physicsMassGroup = GetComponentDataFromEntity<PhysicsMass>(true);
-                var healthGroup = GetComponentDataFromEntity<PlayerHealth>(true);
+                var healthGroup = GetComponentDataFromEntity<PlayerHealth>();
 
                 MakeExplosion(ref World.GetOrCreateSystem<BuildPhysicsWorld>().PhysicsWorld,
                     translationGroup, rotationGroup,
