@@ -177,7 +177,7 @@ PrefabInstance:
     - target: {fileID: 5333319970669631787, guid: e2b5cdfbf5fb72c41ad853022ce5af2b,
         type: 3}
       propertyPath: m_Name
-      value: Tank2
+      value: BlueTank
       objectReference: {fileID: 0}
     - target: {fileID: 5334981162364510705, guid: e2b5cdfbf5fb72c41ad853022ce5af2b,
         type: 3}
@@ -217,7 +217,7 @@ PrefabInstance:
     - target: {fileID: 5334981162364510705, guid: e2b5cdfbf5fb72c41ad853022ce5af2b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5334981162364510705, guid: e2b5cdfbf5fb72c41ad853022ce5af2b,
         type: 3}
@@ -234,6 +234,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5672075546309980617, guid: e2b5cdfbf5fb72c41ad853022ce5af2b,
+        type: 3}
+      propertyPath: playerId
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2b5cdfbf5fb72c41ad853022ce5af2b, type: 3}
 --- !u!1001 &1154392271
@@ -245,7 +250,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1503742628758662, guid: c090eef6d021c614fa59d513a84c2b06, type: 3}
       propertyPath: m_Name
-      value: Tank
+      value: RedTank
       objectReference: {fileID: 0}
     - target: {fileID: 4289182551325788, guid: c090eef6d021c614fa59d513a84c2b06, type: 3}
       propertyPath: m_LocalPosition.x
@@ -277,7 +282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4289182551325788, guid: c090eef6d021c614fa59d513a84c2b06, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4289182551325788, guid: c090eef6d021c614fa59d513a84c2b06, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -290,6 +295,11 @@ PrefabInstance:
     - target: {fileID: 4289182551325788, guid: c090eef6d021c614fa59d513a84c2b06, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 338288170670386276, guid: c090eef6d021c614fa59d513a84c2b06,
+        type: 3}
+      propertyPath: playerId
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c090eef6d021c614fa59d513a84c2b06, type: 3}
