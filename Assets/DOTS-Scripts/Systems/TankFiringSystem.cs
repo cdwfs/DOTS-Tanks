@@ -10,13 +10,13 @@ using UnityEngine;
 public class TankFiringSystem : JobComponentSystem
 {
     //[BurstCompile] -- uncomment when burstable ECBs are enabled
-    struct SpawnShellsJob : IJobForEachWithEntity<PlayerInputState, LocalToWorld, Rotation, TankAttackStats>
+    struct SpawnShellsJob : IJobForEachWithEntity<PlayerInputState, LocalToWorld, Rotation, TankAttackStats, Aerial>
     {
         public EntityCommandBuffer.Concurrent CommandBuffer;
         public Entity ShellPrefab;
         public float DeltaTime;
 
-        void FireShell(int jobIndex, [ReadOnly] ref LocalToWorld tankLocalToWorld, [ReadOnly] ref Rotation tankRotation, [ReadOnly] ref TankAttackStats attackStats)
+        void FireShell(int jobIndex, [ReadOnly] ref LocalToWorld tankLocalToWorld, [ReadOnly] ref Rotation tankRotation, [ReadOnly] ref TankAttackStats attackStats, ref Aerial aerial)
         {
             var shellEntity = CommandBuffer.Instantiate(jobIndex, ShellPrefab);
             CommandBuffer.SetComponent(jobIndex, shellEntity, new Translation
@@ -33,16 +33,20 @@ public class TankFiringSystem : JobComponentSystem
                 Linear = math.mul(attackStats.ShellSpawnRotationOffset, tankLocalToWorld.Forward) * attackStats.CurrentLaunchForce,
             });
             attackStats.IsCharging = 0;
+
+            // Start aerial wobble animation
+            aerial.WobbleMagnitude = 1.0f;
+            aerial.WobbleTime = 0.0f;
         }
 
         public void Execute(Entity tankEntity, int jobIndex, [ReadOnly] ref PlayerInputState inputState,
-            [ReadOnly] ref LocalToWorld tankLocalToWorld, [ReadOnly] ref Rotation tankRotation, ref TankAttackStats attackStats)
+            [ReadOnly] ref LocalToWorld tankLocalToWorld, [ReadOnly] ref Rotation tankRotation, ref TankAttackStats attackStats, ref Aerial aerial)
         {
             // Track the current state of the fire button and make decisions based on the current launch force.
             if (attackStats.CurrentLaunchForce >= attackStats.MaxLaunchForce && attackStats.IsCharging != 0) {
                 // at max charge, not fired -- force the player to fire at max force.
                 attackStats.CurrentLaunchForce = attackStats.MaxLaunchForce;
-                FireShell(jobIndex, ref tankLocalToWorld, ref tankRotation, ref attackStats);
+                FireShell(jobIndex, ref tankLocalToWorld, ref tankRotation, ref attackStats, ref aerial);
             } else if (inputState.Firing != 0 && attackStats.CurrentLaunchForce == attackStats.MinLaunchForce && attackStats.IsCharging == 0) {
                 // not charging, launch force at min, just pressed fire -- reset launch force and start charging
                 attackStats.IsCharging = 1;
@@ -55,7 +59,7 @@ public class TankFiringSystem : JobComponentSystem
                 attackStats.CurrentLaunchForce += attackStats.ChargeSpeed * DeltaTime;
             } else if (inputState.Firing == 0 && attackStats.IsCharging != 0) {
                 // charging + fire button released -- fire and reset launch force for next shot
-                FireShell(jobIndex, ref tankLocalToWorld, ref tankRotation, ref attackStats);
+                FireShell(jobIndex, ref tankLocalToWorld, ref tankRotation, ref attackStats, ref aerial);
                 attackStats.CurrentLaunchForce = attackStats.MinLaunchForce;
             }
         }
