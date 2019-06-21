@@ -43,8 +43,8 @@ GameObject:
   - component: {fileID: 338288170670386276}
   - component: {fileID: -1710816744730052525}
   - component: {fileID: 3131285949235171239}
-  - component: {fileID: 6635719921274023508}
   - component: {fileID: 2180199237281987970}
+  - component: {fileID: 3676541905130869463}
   m_Layer: 9
   m_Name: Tank
   m_TagString: Untagged
@@ -143,7 +143,7 @@ MonoBehaviour:
     Radius: 0.8
     Axis: 1
   m_SphereRadius: 0.85
-  m_ConvexRadius: 0.5
+  m_ConvexRadius: 0.25
   m_CustomMesh: {fileID: 0}
   m_Material:
     m_SupportsTemplate: 1
@@ -154,8 +154,8 @@ MonoBehaviour:
     m_Friction:
       m_Override: 0
       m_Value:
-        Value: 0.65
-        CombineMode: 0
+        Value: 0.5
+        CombineMode: 2
     m_Restitution:
       m_Override: 0
       m_Value:
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_InitialLinearVelocity:
     x: 0
     y: 0
-    z: 0
+    z: 1
   m_InitialAngularVelocity:
     x: 0
     y: 0
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OverrideDefaultMassDistribution: 1
   m_CenterOfMass:
     x: 0
-    y: -5
+    y: -0.5
     z: 0
   m_Orientation:
     Value:
@@ -213,21 +213,6 @@ MonoBehaviour:
     x: 0.4
     y: 0.4
     z: 0.4
---- !u!114 &6635719921274023508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1503742628758662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b89c6131e8e6404d84b46d7081f2999, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LockX: 1
-  LockY: 0
-  LockZ: 1
 --- !u!114 &2180199237281987970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +229,28 @@ MonoBehaviour:
   Node1: {fileID: 8734866209199532348}
   Node2: {fileID: 7909725137705440983}
   Node3: {fileID: 1474504484520369651}
+--- !u!114 &3676541905130869463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503742628758662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc7702d3d9312745ab996854ae4ddd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConnectedBody: {fileID: 0}
+  EnableCollision: 1
+  LockLinearAxes:
+    x: 0
+    y: 1
+    z: 0
+  LockAngularAxes:
+    x: 1
+    y: 0
+    z: 1
 --- !u!1 &1542776907038018
 GameObject:
   m_ObjectHideFlags: 0
