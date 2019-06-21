@@ -1,66 +1,88 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections;
+using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
 public class CameraControlSystem : ComponentSystem
 {
+    
+    private Camera camera;
+    private CameraControlComponent cameraControl;
+    private Entity player1Entity;
+    private Entity player2Entity;
+
     protected override void OnUpdate()
     {
-        Move();
-        Zoom();
-    }
+        if (camera == null)
+            GetSceneCamera();
 
-    private void Move()
-    {
-        Entities.WithAll<Transform, CameraControlComponent, Translation>().ForEach((Entity e, Transform t, ref CameraControlComponent control,ref Translation translation) => 
-        {
-            translation.Value = math.lerp(translation.Value, FindAveragePosition(translation.Value), control.DampTime);
-            t.position = (Vector3)translation.Value;
-        });
-    }
+        if (player1Entity == Entity.Null || player2Entity == Entity.Null)
+            GetPlayersEntities();
 
-    private void Zoom()
-    {
-        Entities.WithAll<Camera,Translation, CameraControlComponent >().ForEach((Entity e, Camera cam, ref Translation translation, ref CameraControlComponent control) =>
-        {
-            control.CameraSize = math.lerp(control.CameraSize, FindRequiredSize(translation.Value), control.ZoomSpeed);
-            cam.orthographicSize = control.CameraSize;
-        });
-    }
-    private float3 FindAveragePosition(float3 CameraPosition)
-    {
-        float3 averagePos = new float3();
-        int numTargets = 0;
+        if (camera == null || player1Entity == Entity.Null || player2Entity == Entity.Null)
+            return;
 
-        Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref Translation translation) =>
-        {
-            averagePos += translation.Value;
-            numTargets++;
-        });
-     
-        if (numTargets > 0)
-            averagePos /= numTargets;
-        averagePos.y = CameraPosition.y;
-        return averagePos;
-    }
+        float3 player1pos = EntityManager.GetComponentData<Translation>(player1Entity).Value;
+        float3 player2pos = EntityManager.GetComponentData<Translation>(player2Entity).Value;
 
-    private float FindRequiredSize(float3 CameraPosition)
+        var averagePos = (player1pos + player2pos) / 2;
+        averagePos.y = camera.transform.position.y;
+        Move(averagePos);
+
+        var size = math.length(player2pos - player1pos) / 2;
+        size += cameraControl.ScreenEdgeBuffer;
+        size = math.max(size, cameraControl.MinSize);
+        Zoom(size);
+    }
+    private void GetSceneCamera()
     {
-        float size = 0f;
-        var desiredLocalPos = new float3();
-        CameraControlComponent cameraControl = new CameraControlComponent();
+        camera = Camera.main;
         Entities.ForEach((Entity e, ref CameraControlComponent control) =>
         {
             cameraControl = control;
         });
-        Entities.WithAll<CameraTarget, Translation>().ForEach((Entity e, ref Translation targetTranslation) =>
+    }
+    private void GetPlayersEntities()
+    {
+        if (player1Entity == Entity.Null || player2Entity == Entity.Null)
         {
-            desiredLocalPos = targetTranslation.Value - desiredLocalPos;
-        });
-        size = math.length(desiredLocalPos)/2;
-        size += cameraControl.ScreenEdgeBuffer;
-        size = math.max(size,cameraControl.MinSize);
-        return size;
+            var playersQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
+            {
+                All = new[] { ComponentType.ReadOnly<TankPlayer>() },
+            });
+            int playerCount = playersQuery.CalculateLength();
+            if (playerCount > 0)
+            {
+                var players = playersQuery.ToEntityArray(Allocator.TempJob);
+                ComponentDataFromEntity<TankPlayer> tankPlayers = GetComponentDataFromEntity<TankPlayer>();
+                for (int i = 0; i < players.Length; i++)
+                {
+                    TankPlayer tankPlayer = tankPlayers[players[i]];
+                    if (tankPlayer.PlayerId == 0)
+                    {
+                        player1Entity = players[i];
+                    }
+                    else if (tankPlayer.PlayerId == 1)
+                    {
+                        player2Entity = players[i];
+                    }
+                }
+                players.Dispose();
+            }
+            playersQuery.Dispose();
+        }
+    }
+    private void Move(float3 averagePosition)
+    {
+        var camerapos = (float3) camera.transform.position;
+        camerapos = math.lerp(camerapos, averagePosition, cameraControl.DampTime);
+        camera.transform.position = (Vector3)camerapos;
+    }
+
+    private void Zoom(float cameraSize)
+    {
+        cameraControl.CameraSize = math.lerp(cameraControl.CameraSize, cameraSize, cameraControl.ZoomSpeed);
+        camera.orthographicSize = cameraControl.CameraSize;
     }
 }
