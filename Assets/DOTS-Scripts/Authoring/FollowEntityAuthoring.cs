@@ -8,10 +8,7 @@ public class FollowEntityAuthoring : MonoBehaviour, IConvertGameObjectToEntity
 
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
-        dstManager.AddComponentData(entity, new FollowEntity()
-        {
-            Position = FollowPosition,
-            Rotation = FollowRotation
-        });
+        if (FollowPosition) dstManager.AddComponent(entity, typeof(FollowEntityTranslation));
+        if (FollowRotation) dstManager.AddComponent(entity, typeof(FollowEntityRotation));
     }
 }
