@@ -4,8 +4,6 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
-Assets/Scenes/Terraform.unity
-Assets/Scenes/Terraform.unity.meta
 Assets/Scripts/Terraform
 Assets/Scripts/Terraform.meta
 
