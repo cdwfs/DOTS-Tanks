@@ -12,6 +12,8 @@ public class HealthSliderSystem : ComponentSystem
 {
     private Entity player1Entity;
     private Entity player2Entity;
+    private SpriteMask player1HealthMask;
+    private SpriteMask player2HealthMask;
 
     protected override void OnUpdate()
     {
@@ -46,13 +48,21 @@ public class HealthSliderSystem : ComponentSystem
                 return; // no players spawned yet
             }
         }
-        Entities.WithAll<SpriteMask, HealthSlider>().ForEach((Entity e, SpriteMask spriteMask, ref HealthSlider healthSlider) => {
-            float playerHealth;
-            if (healthSlider.PlayerId == 0)
-                playerHealth = EntityManager.GetComponentData<PlayerHealth>(player1Entity).Health;
-            else
-                playerHealth = EntityManager.GetComponentData<PlayerHealth>(player2Entity).Health;
-            spriteMask.alphaCutoff = (float)(100 - playerHealth) / 10;
-        });
+        if (player1HealthMask == null || player2HealthMask == null)
+        {
+            Entities.WithAll<SpriteMask, HealthSlider>().ForEach((Entity e, SpriteMask spriteMask, ref HealthSlider healthSlider) => {
+                if (healthSlider.PlayerId == 0)
+                    player1HealthMask = spriteMask;
+                else
+                    player2HealthMask = spriteMask;
+            });
+        }
+
+        player1HealthMask.alphaCutoff = GetPlayerHealthValue(EntityManager.GetComponentData<PlayerHealth>(player1Entity).Health);
+        player2HealthMask.alphaCutoff = GetPlayerHealthValue(EntityManager.GetComponentData<PlayerHealth>(player2Entity).Health);
+    }
+    private float GetPlayerHealthValue(float playerHealth)
+    {
+        return (float)(100 - playerHealth) / 10;
     }
 }
