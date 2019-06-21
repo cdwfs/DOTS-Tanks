@@ -157,8 +157,8 @@ public class SpawnShellExplosionSystem : ComponentSystem
             {
                 var position = m_ShellExplosionSystem.ExplodedShellPositions[i];
 
-                ShellExplosionPrefab.transform.position = position;
-                ShellExplosionParticleSystem.Play();
+                var newGO = GameObject.Instantiate(ShellExplosionPrefab, position, quaternion.Euler(-90,0,0));
+                newGO.GetComponent<ParticleSystem>().Play();
             }
             m_ShellExplosionSystem.ExplodedShellPositions.Clear();
         }

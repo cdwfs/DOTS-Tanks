@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShellExplosion
       objectReference: {fileID: 0}
+    - target: {fileID: 195792, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 486730, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -174,6 +178,30 @@ PrefabInstance:
     - target: {fileID: 486730, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19807510, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19807510, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: stopAction
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19846844, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 113952, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199372, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19861370, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
+      propertyPath: playOnAwake
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22d6b19c6824d404985b22c2b2f3b04d, type: 3}
