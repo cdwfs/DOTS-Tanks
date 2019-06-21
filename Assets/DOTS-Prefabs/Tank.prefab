@@ -169,7 +169,7 @@ MonoBehaviour:
       m_Value: 0101010101010101010101010101010101010101010101010101010101010101
     m_RaisesCollisionEvents:
       m_Override: 0
-      m_Value: 0
+      m_Value: 1
     m_CustomFlags:
       m_Override: 0
       m_Value: 0000000000000000
@@ -198,10 +198,10 @@ MonoBehaviour:
     y: 0
     z: 0
   m_GravityFactor: 1
-  m_OverrideDefaultMassDistribution: 0
+  m_OverrideDefaultMassDistribution: 1
   m_CenterOfMass:
     x: 0
-    y: 0
+    y: -5
     z: 0
   m_Orientation:
     Value:
