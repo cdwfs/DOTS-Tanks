@@ -6,7 +6,7 @@
     "com.unity.jobs": "file:../../dots/Samples/Packages/com.unity.jobs",
     "com.unity.package-manager-ui": "2.1.2",
     "com.unity.performance.profile-analyzer": "0.4.0-preview.5",
-    "com.unity.physics": "file:C:/Users/Cort/code/Unity.Physics/com.unity.physics",
+    "com.unity.physics": "file:../../Unity.Physics/com.unity.physics",
     "com.unity.rendering.hybrid": "file:../../dots/Samples/Packages/com.unity.rendering.hybrid",
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.modules.ai": "1.0.0",
